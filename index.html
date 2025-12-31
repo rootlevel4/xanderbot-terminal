@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html style="background:#000;color:#00ff00;font-family:'Courier New',monospace;margin:0;height:100vh;overflow:hidden">
+<head><title>XanderBot</title></head>
+<body style="background:#000;padding:20px;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1.4">
+<div style="max-width:500px;width:100%;background:#000;padding:20px;border:1px solid #00ff00;box-shadow:inset 0 0 15px #004400">
+  <div id="terminal" style="height:350px;overflow-y:auto;background:#000;padding:10px 0">
+    <div style="color:#00aa00">[XANDERBOT v0.9]</div>
+    <div style="color:#00aa00">system: Neuroscience terminal. Escribe comando.</div>
+    <div id="output"></div>
+  </div>
+  <form id="input" style="margin-top:10px">
+    <div style="display:flex;gap:4px">
+      <span style="color:#00aa00;flex-shrink:0">14:05:01 ></span>
+      <input name="mensaje" autocomplete="off" autocapitalize="off" placeholder="homodopaminus | tiktoxina | contacto" required
+        style="flex:1;background:transparent;color:#00ff00;border:none;border-bottom:1px solid #00ff00;font-family:inherit;font-size:14px;padding:4px 0;outline:none">
+    </div>
+  </form>
+</div>
+
+<script>
+const time = () => new Date().toTimeString().slice(0,8);
+document.getElementById('input').onsubmit = async (e) => {
+  e.preventDefault();
+  const input = e.target.mensaje;
+  const msg = input.value.trim().toLowerCase();
+  if (!msg) return;
+
+  const out = document.getElementById('output');
+  out.innerHTML += `<div>${time()} user> ${msg}</div>`;
+  input.disabled = true;
+
+  try {
+    const res = await fetch('https://tu-n8n.cloud/webhook/xanderbot', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({mensaje: msg})
+    });
+    const data = await res.json();
+    
+    const r = data.respuesta || {mensaje: 'Comandos: homodopaminus | tiktoxina | contacto'};
+    out.innerHTML += `<div style="margin-left:16px;color:#00aa00">${time()} bot> ${r.mensaje}</div>`;
+    
+    if (r.libros) {
+      r.libros.forEach(libro => {
+        out.innerHTML += `<div style="margin-left:32px">${time()} → ${libro.nombre}: <span style="color:#00aa00">${libro.link}</span></div>`;
+      });
+    }
+  } catch (err) {
+    out.innerHTML += `<div style="margin-left:16px;color:#ff0000">${time()} bot> Error conexión.</div>`;
+  }
+  
+  document.getElementById('terminal').scrollTop = document.getElementById('terminal').scrollHeight;
+  input.value = '';
+  input.disabled = false;
+  input.focus();
+};
+</script>
+</body>
+</html>
