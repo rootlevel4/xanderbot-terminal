@@ -6,6 +6,9 @@
   <div id="terminal" style="height:350px;overflow-y:auto;background:#000;padding:10px 0">
     <div style="color:#00aa00">[XANDERBOT v0.9]</div>
     <div style="color:#00aa00">system: Neuroscience terminal. Escribe comando.</div>
+    <div style="color:#00aa00">Comandos (200+ Sheet): tdah_inducido homodopaminus tiktoxina scroll adolexia contacto ayuda</div>
+    <div style="color:#00aa00">Escribe comando → Respuesta neurociencia + 🛒 Amazon</div>
+    <div style="color:#00aa00">ej: "tdah_inducido" | "tiktoxina" | "ayuda"</div>
     <div id="output"></div>
   </div>
   <form id="input" style="margin-top:10px">
@@ -30,16 +33,16 @@ document.getElementById('input').onsubmit = async (e) => {
   input.disabled = true;
 
   try {
-    const res = await fetch('https://tu-n8n.cloud/webhook/xanderbot', {
+    const res = await fetch('PEGA_AQUI_TU_N8N_PRODUCTION_URL', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({mensaje: msg})
+      body: JSON.stringify({comando: msg})
     });
     const data = await res.json();
-    
+
     const r = data.respuesta || {mensaje: 'Comandos: homodopaminus | tiktoxina | contacto'};
     out.innerHTML += `<div style="margin-left:16px;color:#00aa00">${time()} bot> ${r.mensaje}</div>`;
-    
+
     if (r.libros) {
       r.libros.forEach(libro => {
         out.innerHTML += `<div style="margin-left:32px">${time()} → ${libro.nombre}: <span style="color:#00aa00">${libro.link}</span></div>`;
@@ -48,7 +51,7 @@ document.getElementById('input').onsubmit = async (e) => {
   } catch (err) {
     out.innerHTML += `<div style="margin-left:16px;color:#ff0000">${time()} bot> Error conexión.</div>`;
   }
-  
+
   document.getElementById('terminal').scrollTop = document.getElementById('terminal').scrollHeight;
   input.value = '';
   input.disabled = false;
