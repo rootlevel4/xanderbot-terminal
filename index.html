@@ -13,8 +13,8 @@
   </div>
   <form id="input" style="margin-top:10px">
     <div style="display:flex;gap:4px">
-      <span style="color:#00aa00;flex-shrink:0">14:05:01 ></span>
-      <input name="mensaje" autocomplete="off" autocapitalize="off" placeholder="homodopaminus | tiktoxina | contacto" required
+    <span style="color:#00aa00;flex-shrink:0" id="prompt"></span>
+    <input name="mensaje" autocomplete="off" autocapitalize="off" placeholder="homodopaminus | tiktoxina | contacto" required
         style="flex:1;background:transparent;color:#00ff00;border:none;border-bottom:1px solid #00ff00;font-family:inherit;font-size:14px;padding:4px 0;outline:none">
     </div>
   </form>
@@ -22,6 +22,7 @@
 
 <script>
 const time = () => new Date().toTimeString().slice(0,8);
+document.getElementById('prompt').textContent = time() + ' >';
 document.getElementById('input').onsubmit = async (e) => {
   e.preventDefault();
   const input = e.target.mensaje;
