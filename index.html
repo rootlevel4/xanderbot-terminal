@@ -34,7 +34,7 @@ document.getElementById('input').onsubmit = async (e) => {
   input.disabled = true;
 
   try {
-    const res = await fetch('PEGA_AQUI_TU_N8N_PRODUCTION_URL', {
+    const res = await fetch('https://rootlevel4.app.n8n.cloud/webhook/TU_ID_REAL', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({comando: msg})
